@@ -107,7 +107,7 @@
     </ul>
 </nav>
     <header class="cube-header" id="cube-header">
-    <img src=" Banner_s.jpg " alt="头部背景图片">
+    <img src=" Banner_3.jpg " alt="头部背景图片">
     
     <div class="cube-type">
         <span class="cube-typed-title">魚見雲-BLOG</span>
@@ -132,7 +132,7 @@
             z-index: -1;
             background-image: url('/images/Banner_3.jpg');
             background-repeat: no-repeat;
-            background-position: center 44px;
+            background-position: center -56px;
             background-size: cover;
             background-color: transparent;
         }
@@ -140,7 +140,7 @@
         header.cube-background.cube-header-background {
             visibility: hidden;
             background-image: url('/images/Banner_3.jpg');
-            background-position: center 0;
+            background-position: center -100px;
         }
     </style>
     <header class="cube-background cube-header-background">
@@ -203,6 +203,33 @@
         </div>
         <div class="cube-right">
             
+
+<div class="cube-search cube-sidebar" id="cube-search">
+    <div class="search-container">
+        <input type="text" placeholder="搜索" class="cube-search-input" id="cube-search-input">
+        <i class="cube-icon cube-icon-search cube-search-submit" aria-hidden="true"></i>
+    </div>
+    <!-- TODO 通过给window赋一个全局变量，通过脚本赋值 -->
+</div>
+<script>
+    (function (window) {
+        'use strict';
+        window.searchModule = {}
+        window.searchModule.JSONUrl = '/content.json'
+        window.searchModule.rootUrl = '/'
+    })(window)
+</script>
+<div class="cube-search-form">
+    <div class="cube-search-control">
+        <input type="text" placeholder="搜索" class="search-input">
+        <a class="close-button">
+            <i class="cube-icon cube-close" aria-hidden="true"></i>
+        </a>
+    </div>
+    <div class="cube-search-result"></div>
+</div>
+
+
 <div class="cube-author cube-sidebar" id="cube-author">
     
     
@@ -291,12 +318,12 @@
     <div class="cube-boxs">
         
         
-        <div class="cube-box-bg ">
+        <div class="cube-box ">
             <a href="/categories/硬件/">#硬件</a>
         </div>
         
         
-        <div class="cube-box ">
+        <div class="cube-box-bg ">
             <a href="/categories/软件/">#软件</a>
         </div>
         
@@ -317,22 +344,22 @@
     <div class="cube-boxs">
         
         
-        <div class="cube-box ">
+        <div class="cube-box-bg ">
             <a href="/tags/探测器技术/">#探测器技术</a>
         </div>
         
         
-        <div class="cube-box ">
+        <div class="cube-box-bg ">
             <a href="/tags/放大器电路/">#放大器电路</a>
         </div>
         
         
-        <div class="cube-box ">
+        <div class="cube-box-bg ">
             <a href="/tags/hexo/">#hexo</a>
         </div>
         
         
-        <div class="cube-box-bg ">
+        <div class="cube-box ">
             <a href="/tags/网站搭建/">#网站搭建</a>
         </div>
         

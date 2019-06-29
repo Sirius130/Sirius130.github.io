@@ -107,7 +107,7 @@
     </ul>
 </nav>
     <header class="cube-header" id="cube-header">
-    <img src=" Banner_s.jpg " alt="头部背景图片">
+    <img src=" Banner_3.jpg " alt="头部背景图片">
     
     <div class="cube-type">
         <span class="cube-typed-title">魚見雲-BLOG</span>
@@ -132,7 +132,7 @@
             z-index: -1;
             background-image: url('/images/Banner_3.jpg');
             background-repeat: no-repeat;
-            background-position: center 44px;
+            background-position: center -56px;
             background-size: cover;
             background-color: transparent;
         }
@@ -140,7 +140,7 @@
         header.cube-background.cube-header-background {
             visibility: hidden;
             background-image: url('/images/Banner_3.jpg');
-            background-position: center 0;
+            background-position: center -100px;
         }
     </style>
     <header class="cube-background cube-header-background">
@@ -233,8 +233,15 @@
 <li><p>之后发现只要在主题的_config.yml里注释music即可关闭插件显示。</p>
 </li>
 </ul>
-<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">widgets:</span><br><span class="line"><span class="section"># - search</span></span><br><span class="line"><span class="bullet">- </span>author</span><br><span class="line"><span class="section"># - music</span></span><br><span class="line"><span class="bullet">- </span>recent_posts</span><br><span class="line"><span class="bullet">- </span>categories</span><br><span class="line"><span class="bullet">- </span>tagcloud</span><br><span class="line"><span class="bullet">- </span>links</span><br><span class="line"><span class="bullet">- </span>friend_links</span><br></pre></td></tr></table></figure>
-
+<pre><code class="md">widgets:
+# - search
+- author
+# - music
+- recent_posts
+- categories
+- tagcloud
+- links
+- friend_links</code></pre>
 <h3 id="2-关于生成tags和categories页面的问题"><a href="#2-关于生成tags和categories页面的问题" class="headerlink" title="2. 关于生成tags和categories页面的问题"></a>2. 关于生成tags和categories页面的问题</h3><ul>
 <li><p>“标签”，“分类”以及“关于我”页面时默认没有的，需要使用 “hexo new page xxx”命令才能生成对应的目录和index文件。</p>
 </li>
@@ -248,8 +255,11 @@
 <h3 id="3-关于关闭右边栏“开启歌词”按键的问题"><a href="#3-关于关闭右边栏“开启歌词”按键的问题" class="headerlink" title="3. 关于关闭右边栏“开启歌词”按键的问题"></a>3. 关于关闭右边栏“开启歌词”按键的问题</h3><ul>
 <li>音乐插件关闭了，但是右边栏的“开启歌词”空间依然还存在，作者并没有提到如何关闭这个控件，经过对代码的整理，在主题文件下的/layout/_partial/menu.ejs中注释下面的代码即可：</li>
 </ul>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- &lt;% if (theme.music.length &gt; 0) &#123; %&gt;</span><br><span class="line">&lt;li&gt;</span><br><span class="line">    &lt;a class="lrc-control"&gt;&lt;%= __('open_music_lrc') %&gt;&lt;/a&gt;</span><br><span class="line">&lt;/li&gt;</span><br><span class="line">&lt;% &#125; %&gt; --&gt;</span><br></pre></td></tr></table></figure>
-
+<pre><code class="ejs">&lt;!-- &lt;% if (theme.music.length &gt; 0) { %&gt;
+&lt;li&gt;
+    &lt;a class=&quot;lrc-control&quot;&gt;&lt;%= __(&#39;open_music_lrc&#39;) %&gt;&lt;/a&gt;
+&lt;/li&gt;
+&lt;% } %&gt; --&gt; </code></pre>
 <h3 id="4-关于调整Hexo语系的问题"><a href="#4-关于调整Hexo语系的问题" class="headerlink" title="4. 关于调整Hexo语系的问题"></a>4. 关于调整Hexo语系的问题</h3><ul>
 <li>Hexo似乎不填language选项会默认使用英语，按官方文档来看，需要设置成zh-Hans才能变成中文，主题文件里提供了zh-CN.yml文件，这里需要重命名成zh-Hans.yml才能正常完成设置。</li>
 </ul>
@@ -259,11 +269,16 @@
 <li><p>在/layout/_partial/head.ejs里的这里：</p>
 </li>
 </ul>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- inject:style --&gt;</span><br><span class="line">   &lt;link href=<span class="string">"&lt;%- url_for('css/style.css') %&gt;"</span> rel=<span class="string">"stylesheet"</span> type=<span class="string">"text/css"</span>&gt;</span><br><span class="line">   &lt;!-- endinject --&gt;</span><br></pre></td></tr></table></figure>
-
-<p>加上一行</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- inject:style --&gt;</span><br><span class="line">   &lt;link href=<span class="string">"&lt;%- url_for('css/style.css') %&gt;"</span> rel=<span class="string">"stylesheet"</span> type=<span class="string">"text/css"</span>&gt;</span><br><span class="line">   &lt;link href=<span class="string">"&lt;%- config.root %&gt;images/favicon.ico"</span> rel=<span class="string">"icon"</span> type=<span class="string">"image/x-ico"</span>&gt;</span><br><span class="line">   &lt;!-- endinject --&gt;</span><br></pre></td></tr></table></figure>
-
+<pre><code class="ejs"> &lt;!-- inject:style --&gt;
+    &lt;link href=&quot;&lt;%- url_for(&#39;css/style.css&#39;) %&gt;&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;&gt;
+    &lt;!-- endinject --&gt;</code></pre>
+<ul>
+<li>加上一行</li>
+</ul>
+<pre><code class="ejs"> &lt;!-- inject:style --&gt;
+    &lt;link href=&quot;&lt;%- url_for(&#39;css/style.css&#39;) %&gt;&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;&gt;
+    &lt;link href=&quot;&lt;%- config.root %&gt;images/favicon.ico&quot; rel=&quot;icon&quot; type=&quot;image/x-ico&quot;&gt;
+    &lt;!-- endinject --&gt;</code></pre>
 <ul>
 <li>然后将icon文件favicon.ico放在主题文件的source/images/中去，即可正常显示。</li>
 </ul>
@@ -297,6 +312,33 @@
         </div>
         <div class="cube-right">
             
+
+<div class="cube-search cube-sidebar" id="cube-search">
+    <div class="search-container">
+        <input type="text" placeholder="搜索" class="cube-search-input" id="cube-search-input">
+        <i class="cube-icon cube-icon-search cube-search-submit" aria-hidden="true"></i>
+    </div>
+    <!-- TODO 通过给window赋一个全局变量，通过脚本赋值 -->
+</div>
+<script>
+    (function (window) {
+        'use strict';
+        window.searchModule = {}
+        window.searchModule.JSONUrl = '/content.json'
+        window.searchModule.rootUrl = '/'
+    })(window)
+</script>
+<div class="cube-search-form">
+    <div class="cube-search-control">
+        <input type="text" placeholder="搜索" class="search-input">
+        <a class="close-button">
+            <i class="cube-icon cube-close" aria-hidden="true"></i>
+        </a>
+    </div>
+    <div class="cube-search-result"></div>
+</div>
+
+
 <div class="cube-author cube-sidebar" id="cube-author">
     
     
@@ -385,7 +427,7 @@
     <div class="cube-boxs">
         
         
-        <div class="cube-box-bg ">
+        <div class="cube-box ">
             <a href="/categories/硬件/">#硬件</a>
         </div>
         
@@ -395,7 +437,7 @@
         </div>
         
         
-        <div class="cube-box-bg ">
+        <div class="cube-box ">
             <a href="/categories/硬件/模拟电路/">#模拟电路</a>
         </div>
         
@@ -421,12 +463,12 @@
         </div>
         
         
-        <div class="cube-box-bg ">
+        <div class="cube-box ">
             <a href="/tags/hexo/">#hexo</a>
         </div>
         
         
-        <div class="cube-box ">
+        <div class="cube-box-bg ">
             <a href="/tags/网站搭建/">#网站搭建</a>
         </div>
         
