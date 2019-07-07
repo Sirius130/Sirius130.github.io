@@ -187,7 +187,9 @@
     
     <div class="cube-article-content cube-markdown">
         
-        <h1 id="电荷灵敏前放调试经验"><a href="#电荷灵敏前放调试经验" class="headerlink" title="电荷灵敏前放调试经验"></a>电荷灵敏前放调试经验</h1><h2 id="1-简介"><a href="#1-简介" class="headerlink" title="1.简介"></a>1.简介</h2><ul>
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+
+<h1 id="电荷灵敏前放调试经验"><a href="#电荷灵敏前放调试经验" class="headerlink" title="电荷灵敏前放调试经验"></a>电荷灵敏前放调试经验</h1><h2 id="1-简介"><a href="#1-简介" class="headerlink" title="1.简介"></a>1.简介</h2><ul>
 <li><p>在粒子探测技术中，来自探测器的信号一般是以电荷量的变化来识别的，当高能粒子入射到探测器中（以Si探测器为例），粒子的能量会在半导体材料中产生空穴-电子对，电子在外加电场的作用下向一边移动，产生一个微小的电荷量变化，其量级一般在fC（飞库 10e-15 C）量级，当然如果外加电场足够，由高能粒子电离出的一级电子会获得足够的能量在移动的过程中激发出更多的电子，从能谱分辨的角度来说可以提高能谱分辨率。</p>
 </li>
 <li><p>为了检测这种极小量级的电荷量变化，在核电子学的信号处理中通常会使用前置放大器对信号进行预放大，前置放大器一般起以下作用：</p>
@@ -201,7 +203,51 @@
 <li><p>前置放大器一般分为：<code>电压灵敏前置放大器</code>，<code>电荷灵敏前置放大器</code>，<code>电流灵敏前置放大器</code>，这里只讨论电荷灵敏放大器。</p>
 </li>
 </ul>
-<h2 id="2-电荷灵敏放大器相关理论推导"><a href="#2-电荷灵敏放大器相关理论推导" class="headerlink" title="2. 电荷灵敏放大器相关理论推导"></a>2. 电荷灵敏放大器相关理论推导</h2><h2 id="3-经电荷灵敏前放后输出信号的幅值估算"><a href="#3-经电荷灵敏前放后输出信号的幅值估算" class="headerlink" title="3. 经电荷灵敏前放后输出信号的幅值估算"></a>3. 经电荷灵敏前放后输出信号的幅值估算</h2><h2 id="4-什么是极零相消电路"><a href="#4-什么是极零相消电路" class="headerlink" title="4. 什么是极零相消电路"></a>4. 什么是极零相消电路</h2><h2 id="5-实际调试中的相关要点"><a href="#5-实际调试中的相关要点" class="headerlink" title="5. 实际调试中的相关要点"></a>5. 实际调试中的相关要点</h2>
+<h2 id="2-电荷灵敏放大器相关推导"><a href="#2-电荷灵敏放大器相关推导" class="headerlink" title="2. 电荷灵敏放大器相关推导"></a>2. 电荷灵敏放大器相关推导</h2><p>$$V_{oM} = A*V_{iM} = \frac{A_oQ}{C_{if}} = \frac{A_oQ}{C_i+(1 + A_o)C_f}$$</p>
+<ul>
+<li>\(A_o\)是运算放大器的开环增益，因此当\(A_oC_f &gt;&gt; C_i + C_f\)时，则有：</li>
+</ul>
+<p><font color="#000000">$$V_{oM} \approx \frac{Q}{C_f}$$</font></p>
+<ul>
+<li><p>这样，只要\(C_f\)保持恒定不变，不论\(A_o\)、\(C_i\)是否稳定，输出电压幅度\(V_{oM}\)对输入电荷\(Q\)的“放大倍数”都是稳定的。</p>
+</li>
+<li><p>信号前沿上升时间由探测器电荷收集时间和放大器的上升时间等决定，一般不大于200ns。</p>
+</li>
+<li><p>由于反馈电阻\(R_f\)的存在，所以电荷灵敏前置放大器的输出包括一个时间常数为\(R_fC_f\)的衰减部分，这个时间常数与主放中极零相消电路时间常数的可调范围相配合。</p>
+</li>
+<li><p>也因为这个RC回路的存在，信号的形状也遵循指数衰减的形状，即:</p>
+</li>
+</ul>
+<p>$$V(t) = \frac{Q}{C_f}e^{-t/{\tau}_f}$$</p>
+<ul>
+<li><p>其中\({\tau}_f = R_fC_f\)</p>
+</li>
+<li><p>在s域进行分析，电路的传递函数为:</p>
+</li>
+</ul>
+<p>$$V_o(s) = \frac{Q}{C_f} * \frac{s}{s + \frac{1}{\tau_f}}$$ </p>
+<ul>
+<li>在信号输出使用高通RC电路进行微分，对于高通RC电路，其S域的传递函数为\(H(s) = \frac{RCs}{RCs + 1}\),令高通电路中的时间常数\(\tau  = RC\),电路的传递函数可化简为:</li>
+</ul>
+<p>$$V_o(s) = \frac{Q}{C_f} * \frac{s}{(s + \frac{1}{\tau_f})(s + \frac{1}{\tau})}$$</p>
+<ul>
+<li>令\(\lambda = \tau / \tau_f(\lambda \ll 1)\)，将上式化简为:</li>
+</ul>
+<p>$$V_o(s) = \frac{Q}{C_f} * \frac{1}{1-\lambda} * (\frac{1}{s + \frac{1}{\tau}} - \lambda \frac{1}{(s + \frac{1}{\tau_f})})$$</p>
+<ul>
+<li>转换成时域信号为：</li>
+</ul>
+<p><font color="#000000">$$V_o(s) = \frac{Q}{C_f} * \frac{1}{1-\lambda} * (e^{-t/\tau} - \lambda*e^{-t/\tau_f})$$</font></p>
+<ul>
+<li><p>可以看到这是一个双极性信号，可求得其过零时间为：<font color="#dd0000">\(t_z = \frac{\tau}{1-\lambda}ln\frac{1}{\lambda} \approx \tau ln\frac{1}{\lambda}\)：</font>,其到达负峰的时间为：<font color="#dd0000">\(t_m = \frac{2\tau}{1-\lambda}ln\frac{1}{\lambda} \approx 2\tau ln\frac{1}{\lambda}\)</font></p>
+</li>
+<li><p>信号下冲的后沿可以用<font color="#000000">\(V_o(t) = -\frac{Q}{C_f}*\lambda e^{-t/\tau_f}\)</font>来表示，虽然值不大，但是会带来很长的拖尾，存在幅度过载的问题，为了解决下冲过久导致的死时间过长，可以使用成型电路，详情见<code>极零相消电路</code>。</p>
+</li>
+</ul>
+<h2 id="3-经电荷灵敏前放后输出信号的幅值估算"><a href="#3-经电荷灵敏前放后输出信号的幅值估算" class="headerlink" title="3. 经电荷灵敏前放后输出信号的幅值估算"></a>3. 经电荷灵敏前放后输出信号的幅值估算</h2><h2 id="4-什么是极零相消电路"><a href="#4-什么是极零相消电路" class="headerlink" title="4. 什么是极零相消电路"></a>4. 什么是极零相消电路</h2><h2 id="5-实际调试中的相关要点"><a href="#5-实际调试中的相关要点" class="headerlink" title="5. 实际调试中的相关要点"></a>5. 实际调试中的相关要点</h2><ul>
+<li>反馈电阻释放电容上累积的电荷，稳定直流工作点，但是输出脉冲有堆积，且是噪声的主要来源之一。</li>
+</ul>
+
     </div>
 </div>
 
@@ -342,12 +388,12 @@
     <div class="cube-boxs">
         
         
-        <div class="cube-box ">
+        <div class="cube-box-bg ">
             <a href="/categories/硬件/">#硬件</a>
         </div>
         
         
-        <div class="cube-box ">
+        <div class="cube-box-bg ">
             <a href="/categories/软件/">#软件</a>
         </div>
         
@@ -368,12 +414,12 @@
     <div class="cube-boxs">
         
         
-        <div class="cube-box ">
+        <div class="cube-box-bg ">
             <a href="/tags/探测器技术/">#探测器技术</a>
         </div>
         
         
-        <div class="cube-box-bg ">
+        <div class="cube-box ">
             <a href="/tags/放大器电路/">#放大器电路</a>
         </div>
         
