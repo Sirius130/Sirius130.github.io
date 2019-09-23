@@ -12,7 +12,7 @@
     
     
     
-    <title>归档 | 魚見雲-BLOG</title>
+    <title>蜗牛星际千兆A款搭建黑群晖 | 魚見雲-BLOG</title>
     <!-- inject:style -->
     <link href="/css/style.css" rel="stylesheet" type="text/css">
     
@@ -166,47 +166,183 @@
     
     <div class="cube-content">
         <div class="cube-left">
-            <style>
-    @media(max-width: 768px) {
-        body {
-            background-color: #fff!important;
-        }
-    }
-</style>
-<div class="cube-archives">
+            <div class="cube-article">
+    <h1 class="title">蜗牛星际千兆A款搭建黑群晖</h1>
     
-        
-        <div class="cube-archive" style="margin-top: 0;">
-            
-                
-                   
-                            <h1 class="title">2019</h1>
-                            <ul class="posts">
-                   
-                            <li class="post">
-                                <a href="/2019/09/21/DSM-Deploy/">蜗牛星际千兆A款搭建黑群晖</a>
-                            </li>
-                
-            
-                
-                   
-                            <li class="post">
-                                <a href="/2019/06/29/ChargeSensitive-Preamplifier/">电荷灵敏前置放大器</a>
-                            </li>
-                
-            
-                
-                   
-                            <li class="post">
-                                <a href="/2019/06/23/hexo-logs/">Hexo + github 搭建博客踩坑记录</a>
-                            </li>
-                
-            
-                    </ul>
-                        </div>
-        
+    <div class="cube-article-header">
+        <div class="cube-article-date">
+            <i class="cube-icon cube-icon-date" aria-hidden="true"></i>
+            <!-- moment.js对象 -->
+            2019-09-21
+        </div>
+        <div class="cube-article-tags">
+    <i class="cube-icon cube-icon-tag" aria-hidden="true"></i>
+    
+    <a href="/tags/局域网计划/">#局域网计划</a>
+    
+    <a href="/tags/服务器建设/">#服务器建设</a>
     
 </div>
+    </div>
+    
+    <div class="cube-article-content cube-markdown">
+        
+        <h1 id="黑群晖的折腾记录"><a href="#黑群晖的折腾记录" class="headerlink" title="黑群晖的折腾记录"></a>黑群晖的折腾记录</h1><h2 id="前情提要"><a href="#前情提要" class="headerlink" title="前情提要"></a>前情提要</h2><ul>
+<li><p>前一阵子蜗牛星际流出来的矿机在搭建NAS这方面上很受人追捧，ABCD四个机型的外壳都挺好看，有四个盘位，最重要的是便宜，笔者当时买的时候整机也就200多一点，单机箱甚至只要几十块，那干嘛不整一个来玩玩呢？</p>
+</li>
+<li><p>想着今年之内还会告别宿舍的集体生活，搬去外面的新家，终于逮到机会整我的家庭局域网计划了，混迹pt站点多年在手上攒的动画BD已经塞满了手上的移动硬盘，现在已经到了出去旅游拍的照片都没地方备份的地步，相当需要一个可靠的存储服务。</p>
+</li>
+</ul>
+<a id="more"></a>
+
+<ul>
+<li><p>但是话又说回来，蜗牛星际好玩归好玩，想做到“靠谱”的地步还是有些困难，一方面想上Freenas来体验据称最强文件系统的zfs，但是zfs的可靠性又严重依赖于ECC内存的校验和内存的大小，装上稍微体验了下，蜗牛原装的这J1900 + 4G内存配置实在是吃不消，想扩一下配置就要换主板方案了。</p>
+</li>
+<li><p>曾考虑过J3455这个看起来应用很广泛的板子，但是看了一些反映的问题，还是没决定用它，还看到过一些介绍DQ77KB这个intel原厂的工控机小板，看起来蛮不错，但是是DC供电，板载的sata供电部分理论最大只有28W，带4块硬盘就得考虑独立加电源供电，这样就同时还带来了双电源共地和同步启动的问题，想来还是太麻烦了，所以核心存储服务的方案还是别用这个脆弱的小蜗牛了。</p>
+</li>
+<li><p>话虽如此，买都买了，核心存储服务固然需要，但是用一个不那么靠谱的低功耗小服务器跑RSS订阅下载，视频解码或者之类的小服务，存放一些常用文件的副本，还有比这个蜗牛更合适的吗？干脆就放弃raid什么的直接刷个黑裙晖做下载机好了。</p>
+</li>
+</ul>
+<h2 id="配置与计划简介"><a href="#配置与计划简介" class="headerlink" title="配置与计划简介"></a>配置与计划简介</h2><ul>
+<li><p>先简单说一下我手上这个A款千兆蜗牛的配置，核心还是J1900，4核4线，2.0GHz基频，没什么出彩的，但是TDP低到10W，就很适合长期开机的用法，据说A款的原生千兆版本是蜗牛星际系列中翻车最少的，至少比B款那个双口百兆破解成千兆的要稳定得多，所以理论上并没有什么问题，因为觉得4G实在不太行，于是去某鱼上整了个8G的笔记本条换上。</p>
+</li>
+<li><p>黑群晖的系统与引导是分开的，所以一般安装时会需要一个u盘专门用来写入引导程序来引导开机，但是蜗牛都自带一个16G的MSATA的杂牌ssd，真用起来肯定不敢恭维，但是只用来引导的话问题不大，所以就省了一个u盘的钱，顺便一提，A款的主板上还有一个usb口，真要用u盘的话也不用插在屁股后面了。</p>
+</li>
+<li><p>关于蜗牛星际各款的区别评测，可以参考这篇文章<a href="https://post.smzdm.com/p/a25r4ddq/" target="_blank" rel="noopener">蜗牛星际：我集齐了ABCD款，折腾矿渣一个月的全记录！</a></p>
+</li>
+<li><p>这位折腾NAS的经验文章也有很高的参考价值<a href="https://zhuanlan.zhihu.com/p/30755766" target="_blank" rel="noopener">关于硬盘、存储池和NAS–家用存储方案持续折腾记</a></p>
+</li>
+<li><p>那么计划就变得比较清晰了，用这个机器安装黑群晖，自动订阅RSS下载动画更新，安装视频服务插件，用电视盒子或者HTPC远程连接播放，作为媒体中心应该是完全够用了。</p>
+</li>
+<li><p>当然，具体安装软件实现需求的功能不在本文记录，之后会更新文章。</p>
+</li>
+</ul>
+<h2 id="安装黑群晖"><a href="#安装黑群晖" class="headerlink" title="安装黑群晖"></a>安装黑群晖</h2><ul>
+<li><p>在实际去查黑群晖相关的技术细节之前，我是实在没有想到，黑群晖破解的这种线下交流已经到了这种高度集成的程度，只需这样一个小软件，从镜像获取，到引导程序获取，到远程安装助手，镜像写入工具全部到手了，甚至还贴心的包含视频教程，实在是佩服佩服。</p>
+</li>
+<li><p>关于参考的文章，可以这一篇<a href="https://mapgun.com/archives/2341" target="_blank" rel="noopener">蜗牛星际NAS安装黑群晖V6.2.1+洗白+免U盘引导启动</a></p>
+</li>
+<li><p>基本来说，安装黑群晖甚至不需要谷歌，下载上述的软件之后，你就获取了所有安装黑群晖，破解黑群晖所需的文件和工具，具体来总结的话就是：</p>
+</li>
+</ul>
+<h3 id="1-准备工具"><a href="#1-准备工具" class="headerlink" title="1. 准备工具"></a>1. 准备工具</h3><ul>
+<li><p><strong>硬件准备：</strong></p>
+</li>
+<li><ul>
+<li>U盘 * 1 （能装下PE与引导文件即可）；</li>
+</ul>
+</li>
+<li><ul>
+<li>显示器 * 1 （VGA或HDMI接口）；</li>
+</ul>
+</li>
+<li><ul>
+<li>鼠标 * 1 （USB接口）</li>
+</ul>
+</li>
+<li><ul>
+<li>键盘 * 1 （USB接口，没有的话PE里也能用软键盘应急）</li>
+</ul>
+</li>
+<li><p><strong>软件工具：</strong></p>
+</li>
+<li><ul>
+<li>黑群晖工具获取器 V1.3（下载引导文件与对应版本系统） &gt;&gt; <a href="https://www.lanzous.com/i4fusre" target="_blank" rel="noopener">下载地址</a></li>
+</ul>
+</li>
+<li><ul>
+<li>DiskImg（将引导文件镜像写入内置SSD），工具箱里有，放到pe的u盘里</li>
+</ul>
+</li>
+<li><ul>
+<li>DiskGenius（分区管理工具，PE版），放到pe的u盘里   &gt;&gt;<a href="http://www.diskgenius.cn/download.php" target="_blank" rel="noopener">官网地址</a></li>
+</ul>
+</li>
+<li><ul>
+<li>Synology Assistant（群晖助手，用于装系统）</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-安装系统"><a href="#2-安装系统" class="headerlink" title="2. 安装系统"></a>2. 安装系统</h3><ul>
+<li><ol>
+<li>拿到.img格式的引导文件，在PE系统中使用镜像写入工具将这个引导文件直接写入到你的引导盘中，在这里，引导盘就是16G的SSD；</li>
+</ol>
+</li>
+</ul>
+<ul>
+<li><ol start="2">
+<li>刷写完成后，使用新版本的DiskGenius打开引导盘中的ESP分区，找到grub文件夹下的grub.cfg文件，并把它拷贝出来，供后续破解(PE系统自带的旧版DiskGenius可能无法识别引导盘分区内的文件)；</li>
+</ol>
+</li>
+</ul>
+<ul>
+<li><ol start="3">
+<li>退出PE系统，重启电脑，这时系统会从引导盘引导启动，你会看到下面的界面：</li>
+</ol>
+</li>
+</ul>
+<ul>
+<li><ol start="4">
+<li>打开同一个局域网的其他电脑，安装小工具中的Synology Assistant工具，这个工具会扫描局域网中的机器，识别你的群晖主机，应该会看到一个未就绪的机器名；</li>
+</ol>
+</li>
+</ul>
+<ul>
+<li><ol start="5">
+<li>接下来就是右键选中安装，选择好下载的系统镜像.pat文件按照引导进行安装；</li>
+</ol>
+</li>
+</ul>
+<ul>
+<li><ol start="6">
+<li>安装完成后机器会重启，安装助手会在机器就绪后自动退出倒计时并告诉你主机管理页面的链接地址，进入主机后完成后续的设置；</li>
+</ol>
+</li>
+</ul>
+<ul>
+<li><ol start="7">
+<li>在设置向导中选择手动安装更新，不参与任何体验计划（黑群晖想什么呢），在完成设置后记得再去控制面板中彻底取消自动更新；</li>
+</ol>
+</li>
+</ul>
+<ul>
+<li><ol start="8">
+<li>这时安装过程已经完成，接下来就是我使用的6.2.1 u6版本的黑群晖系统的洗白方式</li>
+</ol>
+</li>
+</ul>
+<h3 id="3-洗白黑群晖"><a href="#3-洗白黑群晖" class="headerlink" title="3. 洗白黑群晖"></a>3. 洗白黑群晖</h3><h2 id="一些问题总结"><a href="#一些问题总结" class="headerlink" title="一些问题总结"></a>一些问题总结</h2><ul>
+<li><p>常见的问题参见：<strong><a href="https://odcn.top/2018/12/13/1944/1212/" target="_blank" rel="noopener">黑群晖常见问题</a></strong></p>
+</li>
+<li><p>如果还有别的什么要强调的，那就是：<strong>没事别瞎点更新</strong></p>
+</li>
+</ul>
+<h2 id="附录：关于群晖系统中存储的相关名词"><a href="#附录：关于群晖系统中存储的相关名词" class="headerlink" title="附录：关于群晖系统中存储的相关名词"></a><em>附录：关于群晖系统中存储的相关名词</em></h2><ul>
+<li>更新中</li>
+</ul>
+
+    </div>
+</div>
+
+<div class="cube-article-nav">
+    <ul>
+        
+        
+        <li class="next">
+            <a href="/2019/06/29/ChargeSensitive-Preamplifier/">
+                电荷灵敏前置放大器
+                <i class="cube-icon cube-next" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+<!-- TODO 根据theme.comment的内容进行入口选择 -->
+
+
+
         </div>
         <div class="cube-right">
             
@@ -343,12 +479,12 @@
         </div>
         
         
-        <div class="cube-box ">
+        <div class="cube-box-bg ">
             <a href="/categories/硬件/">#硬件</a>
         </div>
         
         
-        <div class="cube-box-bg ">
+        <div class="cube-box ">
             <a href="/categories/硬件/模拟电路/">#模拟电路</a>
         </div>
         
